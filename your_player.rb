@@ -1,6 +1,7 @@
 require './base_player.rb'
 
 class YourPlayer < BasePlayer
+  # Class variable to keep track of visited points across all instances
   @@shared_visited = {}
 
   def initialize(game:, name:)
@@ -40,9 +41,15 @@ class YourPlayer < BasePlayer
     max_col = grid.max_col
   
     (0..max_row).each do |row|
+      # Determine the order of columns to iterate through
+      # If the row is even, iterate from left to right
+      # If the row is odd, iterate from right to left
       cols = row.even? ? (0..max_col) : (0..max_col).to_a.reverse
       cols.each do |col|
         point = { row: row, col: col }
+
+        # Check if the point has not been visited and is a valid move
+        # If so, return this point as the next move
         return point if !visited?(point) && grid.is_valid_move?(from: @current_position, to: point)
       end
     end
